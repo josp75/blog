@@ -19,7 +19,7 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            'slug' => $this->faker->word,
+            'slug' =>join('-',  explode(' ', $this->faker->title)),
             'title' => $this->faker->word,
             'excerpt' => $this->faker->sentence,
             'body' => $this->faker->paragraph,
