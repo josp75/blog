@@ -19,10 +19,10 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            'slug' =>join('-',  explode(' ', $this->faker->title)),
+            'slug' =>implode('-',  explode(' ', $this->faker->title)),
             'title' => $this->faker->word,
-            'excerpt' => $this->faker->sentence,
-            'body' => $this->faker->paragraph,
+            'excerpt' => '<p>'.implode('</p><p>',$this->faker->paragraphs(2)).'</p>',
+            'body' =>'<p>'.implode('</p><p>',$this->faker->paragraphs(6)).'</p>',
             'category_id' => Category::factory(),
             'user_id' => User::factory()
         ];

@@ -5,39 +5,32 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Storage;
 
+/**
+ * @mixin IdeHelperPost
+ */
 class Post extends Model
 {
-    const TITLE = 'title';
-    const SLUG = 'slug';
-    const EXCERPT = 'excerpt';
-    const BODY = 'body';
-    const CATEGORY = 'category_id';
-    const USER = 'user_id';
-
     use HasFactory;
-    protected $fillable = [
-        self::TITLE,
-        self::EXCERPT,
-        self::BODY,
-        self::CATEGORY
-    ];
 
-    protected $with = ['category', 'author'];
+    protected $fillable = ['title', 'slug', 'content', 'category_id', 'image'];
 
-    /**
-     * @return BelongsTo
-     */
+
     public function category(): BelongsTo
     {
-       return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class);
     }
-    /**
-     * @return BelongsTo
-     */
-    public function author(): BelongsTo
+
+    public function tags(): BelongsToMany
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsToMany(Tag::class);
+    }
+
+    public function getImageUrl(): string
+    {
+        return Storage::disk('public')->url($this->image);
     }
 }
 
